@@ -8,9 +8,14 @@ use Illuminate\Support\Str;
 
 class PermohonanController extends Controller
 {
+    public function dashboard()
+    {
+        return view('permohonan.dashboard');
+    }
+
     public function index()
     {
-        return view('permohonan.index');
+    return view('permohonan.index');
     }
 
     public function storeTidakMampu(Request $request)

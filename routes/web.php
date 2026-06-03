@@ -5,8 +5,9 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\PermohonanController;
 
 // Route untuk warga (guest)
-Route::get('/', [PermohonanController::class, 'index'])->name('permohonan.index');
+Route::get('/', [PermohonanController::class, 'dashboard'])->name('permohonan.dashboard');
 
+Route::get('/permohonan', [PermohonanController::class, 'index'])->name('permohonan.index');
 Route::post('/permohonan/tidak-mampu', [PermohonanController::class, 'storeTidakMampu'])->name('permohonan.store.tidak_mampu');
 Route::post('/permohonan/kematian', [PermohonanController::class, 'storeKematian'])->name('permohonan.store.kematian');
 Route::get('/permohonan/status/{tipe}/{token}', [PermohonanController::class, 'status'])->name('permohonan.status');
