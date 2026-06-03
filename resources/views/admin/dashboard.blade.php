@@ -40,6 +40,13 @@
                     class="flex items-center gap-3 px-4 py-2 rounded-lg bg-blue-50 text-blue-700 font-medium text-sm">
                     Dashboard
                 </a>
+
+                <div class="border-t border-gray-100 pt-4 mt-2">
+                    <a href="{{ route('permohonan.dashboard') }}" target="_blank"
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-500 hover:bg-gray-50 font-medium text-sm transition">
+                        🌐 Lihat Halaman Publik
+                    </a>
+                </div>
             </nav>
 
             <div class="px-4 py-4 border-t">
