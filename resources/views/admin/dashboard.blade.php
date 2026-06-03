@@ -11,7 +11,7 @@
     {{-- Sidebar --}}
     <aside class="w-64 bg-white shadow-md min-h-screen flex flex-col">
         <div class="px-6 py-5 border-b">
-            <h1 class="text-lg font-bold text-gray-800">Admin Desa</h1>
+            <h1 class="text-lg font-bold text-gray-800">Panel : Admin Desa</h1>
         </div>
 
         <nav class="flex-1 px-4 py-6 space-y-2">
