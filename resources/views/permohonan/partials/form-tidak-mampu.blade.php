@@ -12,7 +12,7 @@
     </div>
 @endif
 
-<form method="POST" action="{{ route('permohonan.store.tidak_mampu') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('surat.store.tidak-mampu') }}" enctype="multipart/form-data">
     @csrf
 
     <x-form-card title="Data Pemohon (Orang Tua / Wali)">

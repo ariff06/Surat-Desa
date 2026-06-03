@@ -13,9 +13,14 @@ class PermohonanController extends Controller
         return view('permohonan.dashboard');
     }
 
-    public function index()
+    public function tidakMampu()
     {
-    return view('permohonan.index');
+        return view('permohonan.tidak-mampu');
+    }
+
+    public function kematian()
+    {
+        return view('permohonan.kematian');
     }
 
     public function storeTidakMampu(Request $request)

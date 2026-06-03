@@ -7,10 +7,13 @@ use App\Http\Controllers\PermohonanController;
 // Route untuk warga (guest)
 Route::get('/', [PermohonanController::class, 'dashboard'])->name('permohonan.dashboard');
 
-Route::get('/permohonan', [PermohonanController::class, 'index'])->name('permohonan.index');
-Route::post('/permohonan/tidak-mampu', [PermohonanController::class, 'storeTidakMampu'])->name('permohonan.store.tidak_mampu');
-Route::post('/permohonan/kematian', [PermohonanController::class, 'storeKematian'])->name('permohonan.store.kematian');
-Route::get('/permohonan/status/{tipe}/{token}', [PermohonanController::class, 'status'])->name('permohonan.status');
+Route::prefix('surat')->name('surat.')->group(function () {
+    Route::get('/tidak-mampu', [PermohonanController::class, 'tidakMampu'])->name('tidak-mampu');
+    Route::post('/tidak-mampu', [PermohonanController::class, 'storeTidakMampu'])->name('store.tidak-mampu');
+    Route::get('/kematian', [PermohonanController::class, 'kematian'])->name('kematian');
+    Route::post('/kematian', [PermohonanController::class, 'storeKematian'])->name('store.kematian');
+    Route::get('/status/{tipe}/{token}', [PermohonanController::class, 'status'])->name('status');
+});
 
 // Route untuk admin
 Route::prefix('admin')->name('admin.')->group(function () {

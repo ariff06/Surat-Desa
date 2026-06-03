@@ -30,7 +30,7 @@
 
         {{-- Sidebar --}}
         <aside id="sidebar"
-            class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-white shadow-md flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out min-h-screen">
+            class="fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-md flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
 
             {{-- Identitas desa -- hanya tampil di desktop --}}
             <div class="hidden md:block px-6 py-5 border-b">
@@ -51,6 +51,7 @@
                     class="w-full text-left flex items-center gap-3 px-4 py-2 rounded-lg bg-green-50 text-green-700 font-medium text-sm">
                     📄 Tidak Mampu
                 </button>
+                
                 <button onclick="showForm('kematian')" id="btn-kematian"
                     class="w-full text-left flex items-center gap-3 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-50 font-medium text-sm transition">
                     📋 Kematian
@@ -70,7 +71,7 @@
         </aside>
 
         {{-- Konten utama --}}
-        <main class="flex-1 overflow-y-auto">
+        <main class="flex-1 overflow-y-auto md:ml-64">
             <div class="px-4 md:px-8 py-6 max-w-2xl">
                 @yield('slot')
             </div>
@@ -106,7 +107,11 @@
         setActiveSidebar();
 
         function showForm(tipe) {
-            window.location.href = tipe === 'tidak_mampu' ? '/permohonan' : '/permohonan/kematian';
+            if (tipe === 'tidak_mampu') {
+                window.location.href = '{{ route("surat.tidak-mampu") }}';
+            } else {
+                window.location.href = '{{ route("surat.kematian") }}';
+            }
         }
 
         function toggleSidebar() {
