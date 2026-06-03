@@ -58,7 +58,8 @@
                 </button>
 
                 <div class="border-t border-gray-100 pt-4 mt-2">
-                    <a href="#" class="w-full text-left flex items-center gap-3 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-50 font-medium text-sm transition">
+                    <a href="{{ route('surat.cek-status') }}" id="btn-cek-status"
+                        class="w-full text-left flex items-center gap-3 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-50 font-medium text-sm transition">
                         🔍 Cek Status Surat
                     </a>
                 </div>

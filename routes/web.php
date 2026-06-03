@@ -13,7 +13,10 @@ Route::prefix('surat')->name('surat.')->group(function () {
     Route::get('/kematian', [PermohonanController::class, 'kematian'])->name('kematian');
     Route::post('/kematian', [PermohonanController::class, 'storeKematian'])->name('store.kematian');
     Route::get('/status/{tipe}/{token}', [PermohonanController::class, 'status'])->name('status');
-});
+    Route::get('/cek-status', [PermohonanController::class, 'cekStatus'])->name('cek-status');
+    Route::get('/download/{tipe}/{token}', [PermohonanController::class, 'download'])->name('download');
+
+    });
 
 // Route untuk admin
 Route::prefix('admin')->name('admin.')->group(function () {

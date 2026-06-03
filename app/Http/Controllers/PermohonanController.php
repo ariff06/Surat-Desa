@@ -178,12 +178,29 @@ class PermohonanController extends Controller
 
     public function status($tipe, $token)
     {
-        if ($tipe === 'tidak_mampu') {
+        if ($tipe === 'tidak-mampu') {
             $permohonan = PermohonanTidakMampu::where('token_download', $token)->firstOrFail();
         } else {
             $permohonan = PermohonanKematian::where('token_download', $token)->firstOrFail();
         }
 
         return view('permohonan.status', compact('permohonan', 'tipe'));
+    }
+
+    public function cekStatus(Request $request)
+    {
+        if (!$request->has('token')) {
+            return view('permohonan.cek-status');
+        }
+
+        $request->validate([
+            'token' => 'required',
+            'tipe'  => 'required|in:tidak_mampu,kematian',
+        ]);
+
+        return redirect()->route('surat.status', [
+            'tipe'  => $request->tipe,
+            'token' => $request->token,
+        ]);
     }
 }
