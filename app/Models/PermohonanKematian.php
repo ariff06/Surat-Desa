@@ -29,6 +29,7 @@ class PermohonanKematian extends Model
         'status',
         'token_download',
         'catatan_admin',
+        'downloaded_at,'
     ];
 
     public function dokumen()

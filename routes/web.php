@@ -29,6 +29,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('auth:admin')->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+        Route::get('/download/{tipe}/{token}', [PermohonanAdminController::class, 'download'])->name('download');
 
         Route::prefix('permohonan')->name('permohonan.')->group(function () {
             Route::get('/', [PermohonanAdminController::class, 'index'])->name('index');

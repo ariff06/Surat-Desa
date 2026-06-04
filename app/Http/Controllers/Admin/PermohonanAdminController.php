@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PermohonanTidakMampu;
 use App\Models\PermohonanKematian;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PermohonanAdminController extends Controller
 {
@@ -75,5 +76,25 @@ class PermohonanAdminController extends Controller
         ]);
 
         return back()->with('success', 'Permohonan berhasil ditolak.');
+    }
+
+    public function download($tipe, $token)
+    {
+        if ($tipe === 'tidak_mampu') {
+            $permohonan = \App\Models\PermohonanTidakMampu::where('token_download', $token)
+                ->where('status', 'approved')
+                ->firstOrFail();
+            $pdf = Pdf::loadView('pdf.tidak-mampu', compact('permohonan'));
+            $filename = 'SKTM-' . strtoupper(str_replace(' ', '-', $permohonan->nama_lengkap)) . '.pdf';
+        } else {
+            $permohonan = \App\Models\PermohonanKematian::where('token_download', $token)
+                ->where('status', 'approved')
+                ->firstOrFail();
+            $pdf = Pdf::loadView('pdf.kematian', compact('permohonan'));
+            $filename = 'SKK-' . strtoupper(str_replace(' ', '-', $permohonan->nama_jenazah)) . '.pdf';
+        }
+
+        // Download admin tidak mengubah downloaded_at
+        return $pdf->setPaper('a4', 'portrait')->download($filename);
     }
 }

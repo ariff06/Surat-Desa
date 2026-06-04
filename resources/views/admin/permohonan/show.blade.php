@@ -188,7 +188,23 @@
 
             <div class="bg-white rounded-lg shadow p-5">
                 <p class="text-xs text-gray-400 mb-1">Kode Referensi Warga</p>
-                <p class="text-xs font-mono text-gray-600 break-all">{{ $permohonan->token_download }}</p>
+                <p class="text-xs font-mono text-gray-600 break-all mb-3">{{ $permohonan->token_download }}</p>
+
+                @if($permohonan->status === 'approved')
+                    <a href="{{ route('admin.download', ['tipe' => $tipe, 'token' => $permohonan->token_download]) }}"
+                        class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg text-sm font-semibold transition">
+                        ⬇ Download PDF (Admin)
+                    </a>
+
+                    @if($permohonan->downloaded_at)
+                        <p class="text-xs text-gray-400 text-center mt-2">
+                            Warga mendownload pada<br>
+                            {{ \Carbon\Carbon::parse($permohonan->downloaded_at)->format('d M Y, H:i') }} WIB
+                        </p>
+                    @else
+                        <p class="text-xs text-gray-400 text-center mt-2">Warga belum mendownload surat.</p>
+                    @endif
+                @endif
             </div>
 
         </div>

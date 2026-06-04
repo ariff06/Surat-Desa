@@ -79,6 +79,17 @@ class PermohonanController extends Controller
     'kk.max'                          => 'Ukuran foto KK maksimal 2MB.',
     ]);
 
+        // Cek NIK yang sama dengan status pending atau approved
+        $existing = PermohonanTidakMampu::where('nama_lengkap', $request->nama_lengkap)
+            ->whereIn('status', ['pending', 'approved'])
+            ->first();
+
+        if ($existing) {
+            return back()->withErrors([
+                'nama_lengkap' => 'Permohonan dengan nama ini sedang dalam proses atau sudah disetujui. Silakan cek status permohonan Anda dengan kode referensi yang sudah diterima.',
+            ])->withInput();
+        }
+
         $permohonan = PermohonanTidakMampu::create([
             'nama_lengkap'          => $request->nama_lengkap,
             'jenis_kelamin'         => $request->jenis_kelamin,
@@ -163,6 +174,17 @@ class PermohonanController extends Controller
             'token_download'        => Str::uuid(),
         ]);
 
+        // Cek NIK jenazah yang sama dengan status pending atau approved
+        $existing = PermohonanKematian::where('nik_jenazah', $request->nik_jenazah)
+            ->whereIn('status', ['pending', 'approved'])
+            ->first();
+
+        if ($existing) {
+            return back()->withErrors([
+                'nik_jenazah' => 'Permohonan dengan NIK jenazah ini sedang dalam proses atau sudah disetujui. Silakan cek status permohonan Anda dengan kode referensi yang sudah diterima.',
+            ])->withInput();
+        }
+
         foreach (['ktp', 'kk'] as $jenis) {
             $path = $request->file($jenis)->store("dokumen/{$jenis}", 'public');
             DokumenUpload::create([
@@ -228,6 +250,11 @@ class PermohonanController extends Controller
                 ->firstOrFail();
             $pdf = Pdf::loadView('pdf.kematian', compact('permohonan'));
             $filename = 'SKK-' . strtoupper(str_replace(' ', '-', $permohonan->nama_jenazah)) . '.pdf';
+        }
+
+        // Catat waktu download pertama kali
+        if (!$permohonan->downloaded_at) {
+            $permohonan->update(['downloaded_at' => now()]);
         }
 
         return $pdf->setPaper('a4', 'portrait')->download($filename);
