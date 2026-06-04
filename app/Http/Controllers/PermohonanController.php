@@ -182,13 +182,20 @@ class PermohonanController extends Controller
     public function status($tipe, $token)
     {
         if ($tipe === 'tidak_mampu') {
-            $permohonan = PermohonanTidakMampu::where('token_download', $token)->firstOrFail();
+            $permohonan = PermohonanTidakMampu::where('token_download', $token)->first();
         } else {
-            $permohonan = PermohonanKematian::where('token_download', $token)->firstOrFail();
+            $permohonan = PermohonanKematian::where('token_download', $token)->first();
+        }
+
+        if (!$permohonan) {
+            return redirect()->route('surat.cek-status')->with('error',
+                'Permohonan tidak ditemukan. Pastikan kode referensi dan jenis surat yang dipilih sudah benar.'
+            );
         }
 
         return view('permohonan.status', compact('permohonan', 'tipe'));
     }
+
 
     public function cekStatus(Request $request)
     {

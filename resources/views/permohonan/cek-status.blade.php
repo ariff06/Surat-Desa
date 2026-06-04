@@ -9,7 +9,14 @@
 
 @if(session('error'))
     <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6 text-sm">
-        {{ session('error') }}
+        <p class="font-semibold mb-1">Data tidak ditemukan</p>
+        <p>{{ session('error') }}</p>
+        <p class="mt-2 text-red-600">Kemungkinan penyebab:
+            <ul class="list-disc list-inside mt-1 space-y-1">
+                <li>Kode referensi salah atau tidak lengkap</li>
+                <li>Jenis surat yang dipilih tidak sesuai</li>
+            </ul>
+        </p>
     </div>
 @endif
 
