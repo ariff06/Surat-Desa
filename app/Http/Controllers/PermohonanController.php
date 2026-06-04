@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\PermohonanTidakMampu, PermohonanKematian, DokumenUpload;
+use App\Models\PermohonanTidakMampu;
+use App\Models\PermohonanKematian;
+use App\Models\DokumenUpload;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
 
 class PermohonanController extends Controller
@@ -74,7 +77,7 @@ class PermohonanController extends Controller
     'kk.required'                     => 'Foto KK wajib diupload.',
     'kk.image'                        => 'File KK harus berupa gambar.',
     'kk.max'                          => 'Ukuran foto KK maksimal 2MB.',
-    s]);
+    ]);
 
         $permohonan = PermohonanTidakMampu::create([
             'nama_lengkap'          => $request->nama_lengkap,
@@ -109,7 +112,7 @@ class PermohonanController extends Controller
             ]);
         }
 
-        return redirect()->route('permohonan.status', [
+        return redirect()->route('surat.status', [
             'tipe'  => 'tidak_mampu',
             'token' => $permohonan->token_download,
         ]);
@@ -170,7 +173,7 @@ class PermohonanController extends Controller
             ]);
         }
 
-        return redirect()->route('permohonan.status', [
+        return redirect()->route('surat.status', [
             'tipe'  => 'kematian',
             'token' => $permohonan->token_download,
         ]);
@@ -178,7 +181,7 @@ class PermohonanController extends Controller
 
     public function status($tipe, $token)
     {
-        if ($tipe === 'tidak_smampu') {
+        if ($tipe === 'tidak_mampu') {
             $permohonan = PermohonanTidakMampu::where('token_download', $token)->firstOrFail();
         } else {
             $permohonan = PermohonanKematian::where('token_download', $token)->firstOrFail();
@@ -202,5 +205,24 @@ class PermohonanController extends Controller
             'tipe'  => $request->tipe,
             'token' => $request->token,
         ]);
+    }
+
+    public function download($tipe, $token)
+    {
+        if ($tipe === 'tidak_mampu') {
+            $permohonan = PermohonanTidakMampu::where('token_download', $token)
+                ->where('status', 'approved')
+                ->firstOrFail();
+            $pdf = Pdf::loadView('pdf.tidak-mampu', compact('permohonan'));
+            $filename = 'SKTM-' . strtoupper(str_replace(' ', '-', $permohonan->nama_lengkap)) . '.pdf';
+        } else {
+            $permohonan = PermohonanKematian::where('token_download', $token)
+                ->where('status', 'approved')
+                ->firstOrFail();
+            $pdf = Pdf::loadView('pdf.kematian', compact('permohonan'));
+            $filename = 'SKK-' . strtoupper(str_replace(' ', '-', $permohonan->nama_jenazah)) . '.pdf';
+        }
+
+        return $pdf->setPaper('a4', 'portrait')->download($filename);
     }
 }
