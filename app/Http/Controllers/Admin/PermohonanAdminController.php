@@ -9,12 +9,21 @@ use App\Models\PermohonanKematian;
 
 class PermohonanAdminController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tidakMampu = PermohonanTidakMampu::latest()->get();
-        $kematian   = PermohonanKematian::latest()->get();
+        $search = $request->input('search');
 
-        return view('admin.permohonan.index', compact('tidakMampu', 'kematian'));
+        $tidakMampu = PermohonanTidakMampu::when($search, function ($query) use ($search) {
+            $query->where('nama_lengkap', 'like', "%{$search}%")
+                ->orWhere('anak_nama_lengkap', 'like', "%{$search}%");
+        })->latest()->get();
+
+        $kematian = PermohonanKematian::when($search, function ($query) use ($search) {
+            $query->where('nama_jenazah', 'like', "%{$search}%")
+                ->orWhere('nama_pelapor', 'like', "%{$search}%");
+        })->latest()->get();
+
+        return view('admin.permohonan.index', compact('tidakMampu', 'kematian', 'search'));
     }
 
     public function show($tipe, $id)

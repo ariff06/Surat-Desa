@@ -15,6 +15,25 @@
         </div>
     @endif
 
+    {{-- Search bar --}}
+    <form method="GET" action="{{ route('admin.permohonan.index') }}" class="mb-5">
+        <div class="flex gap-3">
+            <input type="text" name="search" value="{{ request('search') }}"
+                placeholder="Cari nama pemohon, jenazah, atau pelapor..."
+                class="flex-1 bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <button type="submit"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">
+                Cari
+            </button>
+            @if(request('search'))
+                <a href="{{ route('admin.permohonan.index') }}"
+                    class="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition">
+                    Reset
+                </a>
+            @endif
+        </div>
+    </form>
+
     {{-- Tab filter --}}
     <div class="flex gap-2 mb-5">
         <button onclick="showTab('tidak_mampu')" id="tab-tidak_mampu"
