@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\PermohonanController;
+use App\Http\Controllers\Admin\PermohonanAdminController;
 
 // Route untuk warga (guest)
 Route::get('/', [PermohonanController::class, 'dashboard'])->name('permohonan.dashboard');
@@ -15,8 +16,7 @@ Route::prefix('surat')->name('surat.')->group(function () {
     Route::get('/status/{tipe}/{token}', [PermohonanController::class, 'status'])->name('status');
     Route::get('/cek-status', [PermohonanController::class, 'cekStatus'])->name('cek-status');
     Route::get('/download/{tipe}/{token}', [PermohonanController::class, 'download'])->name('download');
-
-    });
+});
 
 // Route untuk admin
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -31,6 +31,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
             return view('admin.dashboard');
         })->name('dashboard');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    });
 
+        Route::prefix('permohonan')->name('permohonan.')->group(function () {
+            Route::get('/', [PermohonanAdminController::class, 'index'])->name('index');
+            Route::get('/{tipe}/{id}', [PermohonanAdminController::class, 'show'])->name('show');
+            Route::post('/{tipe}/{id}/approve', [PermohonanAdminController::class, 'approve'])->name('approve');
+            Route::post('/{tipe}/{id}/reject', [PermohonanAdminController::class, 'reject'])->name('reject');
+        });
+    });    
 });

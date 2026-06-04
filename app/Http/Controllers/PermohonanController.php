@@ -178,7 +178,7 @@ class PermohonanController extends Controller
 
     public function status($tipe, $token)
     {
-        if ($tipe === 'tidak-mampu') {
+        if ($tipe === 'tidak_smampu') {
             $permohonan = PermohonanTidakMampu::where('token_download', $token)->firstOrFail();
         } else {
             $permohonan = PermohonanKematian::where('token_download', $token)->firstOrFail();

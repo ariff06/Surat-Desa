@@ -13,6 +13,14 @@ class AuthController extends Controller
         return view('admin.login');
     }
 
+    public function redirectIfAuthenticated()
+    {
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
+        return redirect()->route('admin.login');
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([

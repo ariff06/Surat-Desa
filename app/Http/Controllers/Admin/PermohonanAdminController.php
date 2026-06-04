@@ -1,0 +1,70 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\PermohonanTidakMampu;
+use App\Models\PermohonanKematian;
+
+class PermohonanAdminController extends Controller
+{
+    public function index()
+    {
+        $tidakMampu = PermohonanTidakMampu::latest()->get();
+        $kematian   = PermohonanKematian::latest()->get();
+
+        return view('admin.permohonan.index', compact('tidakMampu', 'kematian'));
+    }
+
+    public function show($tipe, $id)
+    {
+        if ($tipe === 'tidak_mampu') {
+            $permohonan = PermohonanTidakMampu::with('dokumen')->findOrFail($id);
+        } else {
+            $permohonan = PermohonanKematian::with('dokumen')->findOrFail($id);
+        }
+
+        return view('admin.permohonan.show', compact('permohonan', 'tipe'));
+    }
+
+    public function approve(Request $request, $tipe, $id)
+    {
+        $request->validate([
+            'catatan_admin' => 'nullable|string',
+        ]);
+
+        if ($tipe === 'tidak_mampu') {
+            $permohonan = PermohonanTidakMampu::findOrFail($id);
+        } else {
+            $permohonan = PermohonanKematian::findOrFail($id);
+        }
+
+        $permohonan->update([
+            'status'        => 'approved',
+            'catatan_admin' => $request->catatan_admin,
+        ]);
+
+        return back()->with('success', 'Permohonan berhasil disetujui.');
+    }
+
+    public function reject(Request $request, $tipe, $id)
+    {
+        $request->validate([
+            'catatan_admin' => 'required|string',
+        ]);
+
+        if ($tipe === 'tidak_mampu') {
+            $permohonan = PermohonanTidakMampu::findOrFail($id);
+        } else {
+            $permohonan = PermohonanKematian::findOrFail($id);
+        }
+
+        $permohonan->update([
+            'status'        => 'rejected',
+            'catatan_admin' => $request->catatan_admin,
+        ]);
+
+        return back()->with('success', 'Permohonan berhasil ditolak.');
+    }
+}
