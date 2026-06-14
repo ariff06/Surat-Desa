@@ -144,8 +144,14 @@
         </div>
     </x-form-card>
 
-    <x-form-card title="Dokumen Pendukung">
+    <x-form-card title="Keperluan & Dokumen">
         <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nomor RT</label>
+                <input type="text" name="nomor_rt" value="{{ old('nomor_rt') }}"
+                    placeholder="Contoh: 001"
+                    class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+            </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">
                     Foto KTP Pelapor <span class="text-gray-400 font-normal text-xs">(maks. 2MB)</span>

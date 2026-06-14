@@ -18,6 +18,26 @@ Route::prefix('surat')->name('surat.')->group(function () {
     Route::get('/download/{tipe}/{token}', [PermohonanController::class, 'download'])->name('download');
 });
 
+// Route untuk RT
+Route::prefix('rt')->name('rt.')->group(function () {
+
+    Route::middleware('guest:rt')->group(function () {
+        Route::get('/login', [App\Http\Controllers\RT\AuthController::class, 'showLogin'])->name('login');
+        Route::post('/login', [App\Http\Controllers\RT\AuthController::class, 'login']);
+    });
+
+    Route::middleware('auth:rt')->group(function () {
+        Route::get('/dashboard', [App\Http\Controllers\RT\PermohonanRtController::class, 'index'])->name('dashboard');
+        Route::post('/logout', [App\Http\Controllers\RT\AuthController::class, 'logout'])->name('logout');
+
+        Route::prefix('permohonan')->name('permohonan.')->group(function () {
+            Route::get('/{tipe}/{id}', [App\Http\Controllers\RT\PermohonanRtController::class, 'show'])->name('show');
+            Route::post('/{tipe}/{id}/approve', [App\Http\Controllers\RT\PermohonanRtController::class, 'approve'])->name('approve');
+            Route::post('/{tipe}/{id}/reject', [App\Http\Controllers\RT\PermohonanRtController::class, 'reject'])->name('reject');
+        });
+    });
+});
+
 // Route untuk admin
 Route::prefix('admin')->name('admin.')->group(function () {
 
@@ -31,11 +51,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('/download/{tipe}/{token}', [PermohonanAdminController::class, 'download'])->name('download');
 
+        Route::prefix('rt-management')->name('rt.management.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\RtManagementController::class, 'index'])->name('index');
+            Route::get('/{id}', [App\Http\Controllers\Admin\RtManagementController::class, 'show'])->name('show');
+            Route::post('/{id}/toggle-active', [App\Http\Controllers\Admin\RtManagementController::class, 'toggleActive'])->name('toggle-active');
+            Route::post('/{id}/reset-password', [App\Http\Controllers\Admin\RtManagementController::class, 'resetPassword'])->name('reset-password');
+        });
+
         Route::prefix('permohonan')->name('permohonan.')->group(function () {
             Route::get('/', [PermohonanAdminController::class, 'index'])->name('index');
             Route::get('/{tipe}/{id}', [PermohonanAdminController::class, 'show'])->name('show');
             Route::post('/{tipe}/{id}/approve', [PermohonanAdminController::class, 'approve'])->name('approve');
             Route::post('/{tipe}/{id}/reject', [PermohonanAdminController::class, 'reject'])->name('reject');
         });
-    });    
+    });
 });

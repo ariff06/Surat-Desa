@@ -14,15 +14,17 @@ class PermohonanAdminController extends Controller
     {
         $search = $request->input('search');
 
-        $tidakMampu = PermohonanTidakMampu::when($search, function ($query) use ($search) {
-            $query->where('nama_lengkap', 'like', "%{$search}%")
-                ->orWhere('anak_nama_lengkap', 'like', "%{$search}%");
-        })->latest()->get();
+        $tidakMampu = PermohonanTidakMampu::where('rt_status', 'approved')
+            ->when($search, function ($query) use ($search) {
+                $query->where('nama_lengkap', 'like', "%{$search}%")
+                    ->orWhere('anak_nama_lengkap', 'like', "%{$search}%");
+            })->latest()->get();
 
-        $kematian = PermohonanKematian::when($search, function ($query) use ($search) {
-            $query->where('nama_jenazah', 'like', "%{$search}%")
-                ->orWhere('nama_pelapor', 'like', "%{$search}%");
-        })->latest()->get();
+        $kematian = PermohonanKematian::where('rt_status', 'approved')
+            ->when($search, function ($query) use ($search) {
+                $query->where('nama_jenazah', 'like', "%{$search}%")
+                    ->orWhere('nama_pelapor', 'like', "%{$search}%");
+            })->latest()->get();
 
         return view('admin.permohonan.index', compact('tidakMampu', 'kematian', 'search'));
     }
@@ -97,4 +99,5 @@ class PermohonanAdminController extends Controller
         // Download admin tidak mengubah downloaded_at
         return $pdf->setPaper('a4', 'portrait')->download($filename);
     }
+
 }

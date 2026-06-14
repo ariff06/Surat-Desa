@@ -50,6 +50,7 @@ class PermohonanController extends Controller
     'keperluan'              => 'required|string',
     'ktp'                    => 'required|image|max:2048',
     'kk'                     => 'required|image|max:2048',
+    'nomor_rt'               => 'required|string|max:10',
     
     ], [
     'nama_lengkap.required'           => 'Nama lengkap wajib diisi.',
@@ -110,6 +111,7 @@ class PermohonanController extends Controller
             'anak_pekerjaan'        => $request->anak_pekerjaan,
             'anak_alamat'           => $request->anak_alamat,
             'keperluan'             => $request->keperluan,
+            'nomor_rt'              => $request->nomor_rt,
             'token_download'        => Str::uuid(),
         ]);
 
@@ -151,6 +153,7 @@ class PermohonanController extends Controller
             'hubungan_pelapor'      => 'required|string',
             'ktp'                   => 'required|image|max:2048',
             'kk'                    => 'required|image|max:2048',
+            'nomor_rt'              => 'required|string|max:10',
         ]);
 
         $permohonan = PermohonanKematian::create([
@@ -171,6 +174,7 @@ class PermohonanController extends Controller
             'pekerjaan_pelapor'     => $request->pekerjaan_pelapor,
             'alamat_pelapor'        => $request->alamat_pelapor,
             'hubungan_pelapor'      => $request->hubungan_pelapor,
+            'nomor_rt'              => $request->nomor_rt,
             'token_download'        => Str::uuid(),
         ]);
 

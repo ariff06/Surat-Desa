@@ -16,6 +16,10 @@
             class="flex items-center gap-3 px-4 py-2 rounded-lg {{ request()->routeIs('admin.permohonan.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50' }} font-medium text-sm transition">
             📋 Daftar Permohonan
         </a>
+        <a href="{{ route('admin.rt.management.index') }}"
+            class="flex items-center gap-3 px-4 py-2 rounded-lg {{ request()->routeIs('admin.rt.management.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50' }} font-medium text-sm transition">
+            👥 Management RT
+        </a>
 
         <div class="border-t border-gray-100 pt-4 mt-2">
             <a href="{{ route('permohonan.dashboard') }}" target="_blank"

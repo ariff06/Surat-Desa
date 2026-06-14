@@ -29,7 +29,10 @@ class PermohonanKematian extends Model
         'status',
         'token_download',
         'catatan_admin',
-        'downloaded_at,'
+        'downloaded_at',
+        'nomor_rt',
+        'rt_status',
+        'rt_catatan',
     ];
 
     public function dokumen()

@@ -47,6 +47,10 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
+        'rt' => [
+            'driver' => 'session',
+            'provider' => 'rt_users'
+        ],
     ],
 
     /*
@@ -75,6 +79,11 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+        ],
+
+        'rt_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\RtUser::class,
         ],
     ],
 

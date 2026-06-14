@@ -32,6 +32,9 @@ class PermohonanTidakMampu extends Model
         'token_download',
         'catatan_admin',
         'downloaded_at',
+        'nomor_rt',
+        'rt_status',
+        'rt_catatan',
     ];
 
     public function dokumen()
